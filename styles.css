@@ -1,3 +1,5 @@
+/* styles.css */
+
 body {
   font-family: Arial, sans-serif;
   margin: 0;
@@ -39,14 +41,26 @@ button:hover {
 }
 
 .movie {
+  display: flex;
   border: 1px solid #ccc;
   background-color: white;
   padding: 20px;
   margin-bottom: 20px;
 }
 
+.movie img {
+  width: 120px; /* Adjust image size */
+  height: auto;
+  margin-right: 20px;
+}
+
+.movie-info {
+  flex: 1; /* Fill remaining space */
+}
+
 .movie h2 {
   margin-top: 0;
+  margin-bottom: 10px; /* Adjust spacing */
 }
 
 .movie p {
