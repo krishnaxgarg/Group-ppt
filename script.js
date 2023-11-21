@@ -1,4 +1,23 @@
 $(document).ready(function () {
+  $("#searchInput").autocomplete({
+    source: function (request, response) {
+      const apiKey = "251850820c91d73ea09c8ade0d21f2b5";
+      const query = request.term;
+      $.ajax({
+        url: `https://api.themoviedb.org/3/search/movie`,
+        data: {
+          api_key: apiKey,
+          query: query,
+        },
+        success: function (data) {
+          const movieTitles = data.results.map((movie) => movie.title);
+          response(movieTitles);
+        },
+      });
+    },
+    minLength: 2, // Minimum characters before autocomplete suggestions start
+  });
+
   $("#searchButton").on("click", function () {
     const searchTerm = $("#searchInput").val();
     if (searchTerm.trim() !== "") {
@@ -36,8 +55,20 @@ $(document).ready(function () {
     } else {
       movies.forEach(function (movie) {
         const movieInfo = $('<div class="movie"></div>');
-        movieInfo.append(`<h2>${movie.title}</h2>`);
-        movieInfo.append(`<p>${movie.overview}</p>`);
+        const posterPath = movie.poster_path
+          ? `https://image.tmdb.org/t/p/w500${movie.poster_path}`
+          : "https://via.placeholder.com/150"; // Use a placeholder image if no poster available
+
+        const image = $("<img>")
+          .attr("src", posterPath)
+          .attr("alt", `${movie.title} Poster`);
+        const info = $('<div class="movie-info"></div>');
+        info.append(`<h2>${movie.title}</h2>`);
+        info.append(`<p>${movie.overview}</p>`);
+
+        movieInfo.append(image);
+        movieInfo.append(info);
+
         movieContainer.append(movieInfo);
       });
     }
